@@ -7,15 +7,12 @@ export default {
         gf: {
           orange: {
             DEFAULT: '#ff6b1a',
-            dark: '#e85a0c',
             light: '#ff8c42',
-            lighter: '#ffaa6b',
           },
           black: {
             DEFAULT: '#0a0a0a',
             light: '#131313',
-            lighter: '#1b1b1b',
-            card: '#161616',
+            card: '#1a1a1a',
           },
         },
       },

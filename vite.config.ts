@@ -11,6 +11,12 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  server: {
+    // Em desenvolvimento, /api vai para o backend local (pasta backend/, npm run dev).
+    proxy: {
+      '/api': 'http://localhost:3333',
+    },
+  },
   optimizeDeps: {
     exclude: ['lucide-react'],
   },

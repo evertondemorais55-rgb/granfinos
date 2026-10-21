@@ -1,23 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Menu, ShoppingBag, X } from 'lucide-react';
-import { LOGO_URL } from '@/data/menu';
-
-const navLinks = [
-  { label: 'Início', href: '#inicio' },
-  { label: 'Sobre nós', href: '#sobre' },
-  { label: 'Cardápio', href: '#cardapio' },
-  { label: 'Combo', href: '#combo' },
-  { label: 'Galeria', href: '#galeria' },
-  { label: 'Avaliações', href: '#avaliacoes' },
-  { label: 'Contato', href: '#contato' },
-];
+import { navLinks, photos } from '@/data/content';
 
 interface HeaderProps {
-  cartCount?: number;
-  onOpenCart?: () => void;
+  cartCount: number;
+  onOpenCart: () => void;
 }
 
-export default function Header({ cartCount = 0, onOpenCart }: HeaderProps) {
+export default function Header({ cartCount, onOpenCart }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -30,89 +20,72 @@ export default function Header({ cartCount = 0, onOpenCart }: HeaderProps) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-gf-black/95 backdrop-blur-md border-b border-white/[0.07] py-3'
-          : 'bg-gradient-to-b from-gf-black/90 via-gf-black/50 to-transparent py-4'
+      className={`fixed left-0 right-0 top-0 z-50 transition-colors duration-300 ${
+        scrolled || mobileOpen ? 'bg-gf-black/95 py-3 backdrop-blur-md' : 'bg-transparent py-4'
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 lg:px-8">
         <a href="#inicio" className="group flex items-center gap-3">
-          <div className="relative h-12 w-12 overflow-hidden rounded-xl border border-white/10 bg-black p-0.5 transition-transform duration-300 group-hover:scale-105 group-hover:border-gf-orange/50">
-            <img
-              src={LOGO_URL}
-              alt="Granfinos Burger"
-              className="h-full w-full rounded-[10px] object-cover"
-            />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-display text-2xl leading-none tracking-wider text-white">
-              GRAN<span className="text-gf-orange">FINOS</span>
-            </span>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gray-400">
-              Burger Artesanal
-            </span>
-          </div>
+          <img
+            src={photos.logo}
+            alt=""
+            className="h-12 w-12 rounded-xl object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+          <span className="font-display text-2xl leading-none tracking-wider text-white">
+            GRAN<span className="text-gf-orange">FINOS</span>
+          </span>
         </a>
 
-        <nav className="hidden items-center gap-1 lg:flex">
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Seções">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="group relative px-3.5 py-2 text-sm font-medium text-gray-300 transition-colors duration-200 hover:text-white"
+              className="group relative px-3.5 py-2 text-[15px] font-medium text-gray-300 transition-colors duration-200 hover:text-white"
             >
-              <span className="relative z-10">{link.label}</span>
+              {link.label}
               <span className="absolute inset-x-3.5 bottom-1 h-0.5 origin-left scale-x-0 rounded-full bg-gf-orange transition-transform duration-300 ease-out group-hover:scale-x-100" />
             </a>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          {cartCount > 0 && onOpenCart && (
+        <div className="flex items-center gap-2 lg:gap-3">
+          {cartCount > 0 && (
             <button
+              type="button"
               onClick={onOpenCart}
-              className="relative flex items-center gap-2 rounded-full border border-gf-orange/40 bg-gf-orange/10 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gf-orange-light transition-all hover:bg-gf-orange/20"
-              aria-label="Abrir sacola de pedidos"
+              className="flex h-10 items-center gap-2 rounded-full bg-gf-orange/15 px-4 text-sm font-bold text-gf-orange-light transition-colors hover:bg-gf-orange/25"
+              aria-label={`Abrir sacola com ${cartCount} ${cartCount === 1 ? 'item' : 'itens'}`}
             >
               <ShoppingBag size={16} />
-              <span>Sacola ({cartCount})</span>
+              <span>
+                <span className="hidden lg:inline">Sacola </span>
+                {cartCount}
+              </span>
             </button>
           )}
-          <a href="#cardapio" className="btn-primary !px-6 !py-2.5 !text-xs">
-            FAZER PEDIDO
+          <a href="#cardapio" className="btn-primary hidden !px-6 !py-2.5 !text-xs lg:inline-flex">
+            Fazer pedido
           </a>
-        </div>
-
-        <div className="flex items-center gap-2 lg:hidden">
-          {cartCount > 0 && onOpenCart && (
-            <button
-              onClick={onOpenCart}
-              className="relative flex h-10 items-center gap-1.5 rounded-full border border-gf-orange/40 bg-gf-orange/15 px-3.5 text-xs font-bold text-gf-orange-light"
-              aria-label="Abrir sacola"
-            >
-              <ShoppingBag size={16} />
-              <span>{cartCount}</span>
-            </button>
-          )}
           <button
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white transition-colors hover:border-gf-orange/40"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Menu"
+            type="button"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.07] text-white lg:hidden"
+            onClick={() => setMobileOpen((open) => !open)}
+            aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
+            aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
       <div
         className={`overflow-hidden transition-all duration-300 ease-out lg:hidden ${
-          mobileOpen ? 'max-h-[520px] opacity-100' : 'max-h-0 opacity-0'
+          mobileOpen ? 'max-h-[560px] opacity-100' : 'invisible max-h-0 opacity-0'
         }`}
       >
-        <nav className="mx-auto max-w-7xl px-5 pb-6 pt-3">
-          <div className="flex flex-col gap-1 rounded-2xl border border-white/10 bg-gf-black-light/95 p-3 backdrop-blur-xl">
+        <nav className="mx-auto max-w-7xl px-5 pb-6 pt-3" aria-label="Seções">
+          <div className="flex flex-col gap-1 rounded-2xl bg-gf-black-light p-3">
             {navLinks.map((link) => (
               <a
                 key={link.href}
@@ -126,9 +99,9 @@ export default function Header({ cartCount = 0, onOpenCart }: HeaderProps) {
             <a
               href="#cardapio"
               onClick={() => setMobileOpen(false)}
-              className="btn-primary mt-2 w-full justify-center !py-3.5"
+              className="btn-primary mt-2 w-full !py-3.5"
             >
-              FAZER PEDIDO
+              Fazer pedido
             </a>
           </div>
         </nav>

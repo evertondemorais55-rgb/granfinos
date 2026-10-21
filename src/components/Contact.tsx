@@ -1,117 +1,67 @@
-import { Clock, Flame, Instagram, MapPin, MessageCircle, Phone } from 'lucide-react';
-import { whatsappLink } from '@/data/menu';
+import { MessageCircle } from 'lucide-react';
+import { useCatalog } from '@/hooks/useCatalog';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
+import { whatsappLink } from '@/lib/format';
 
 export default function Contact() {
   const ref = useScrollReveal<HTMLElement>();
+  const { business } = useCatalog().catalog;
 
   const contactInfo = [
+    { label: 'Endereço', value: business.address.line1, sub: business.address.line2 },
+    { label: 'WhatsApp', value: business.phoneDisplay, sub: 'Pedidos para entrega e retirada' },
     {
-      icon: MapPin,
-      label: 'Endereço',
-      value: 'Varjão Q 7 Conjunto A B C',
-      sub: 'Varjão Q 7 Conjunto D, A — Brasília, DF',
+      label: 'Horário',
+      value: `${business.hours.opens.slice(0, 2)}h às ${business.hours.closes.slice(0, 2)}h`,
+      sub: business.hours.days,
     },
-    {
-      icon: Phone,
-      label: 'Telefone / WhatsApp',
-      value: '(61) 99811-5921',
-      sub: 'Atendimento rápido para pedidos e retirada',
-    },
-    {
-      icon: Instagram,
-      label: 'Instagram',
-      value: '@granfinosgurguer',
-      sub: 'Acompanhe lançamentos e promoções',
-    },
-    {
-      icon: Clock,
-      label: 'Horário de Funcionamento',
-      value: 'Segunda a Domingo: 19h às 23h',
-      sub: 'Aberto todos os dias da semana',
-    },
+    { label: 'Instagram', value: `@${business.instagram}`, sub: 'Lançamentos e promoções' },
   ];
 
   return (
-    <section
-      ref={ref}
-      id="contato"
-      className="relative overflow-hidden bg-gf-black-light py-24 lg:py-32"
-    >
-      <div className="pointer-events-none absolute -right-40 top-0 h-[400px] w-[400px] rounded-full bg-gf-orange/[0.05] blur-[120px]" />
-
+    <section ref={ref} id="contato" className="bg-gf-black-light py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <div className="flex flex-col items-start justify-between gap-4 border-b border-white/10 pb-8 sm:flex-row sm:items-end">
-          <div>
-            <div className="reveal section-pill mb-4">
-              <Flame size={14} className="text-gf-orange" />
-              <span>Localização & Contato</span>
-            </div>
-            <h2 className="reveal reveal-delay-1 font-display text-4xl uppercase leading-[0.98] text-white sm:text-5xl lg:text-6xl">
-              VEM PARA A <span className="text-gradient-orange">GRANFINOS.</span>
-            </h2>
-          </div>
-          <p className="reveal reveal-delay-2 max-w-md text-sm text-gray-400 sm:text-base">
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+          <h2 className="reveal section-title">
+            VEM PARA A <span className="text-gf-orange">GRANFINOS.</span>
+          </h2>
+          <p className="reveal reveal-delay-1 max-w-md text-lg text-gray-400">
             Peça pelo WhatsApp para receber em casa ou venha retirar seu hambúrguer quentinho no
             Varjão.
           </p>
         </div>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-12">
-          {/* Contact cards in a 2x2 grid + full-width CTA */}
-          <div className="reveal flex flex-col justify-between gap-4 lg:col-span-6">
-            <div className="grid gap-4 sm:grid-cols-2">
+        <div className="mt-12 grid gap-10 lg:grid-cols-12">
+          <div className="reveal flex flex-col justify-between gap-10 lg:col-span-5">
+            <dl className="grid gap-x-8 gap-y-8 sm:grid-cols-2">
               {contactInfo.map((info) => (
-                <div
-                  key={info.label}
-                  className="card-hover flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-gf-black p-5"
-                >
-                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-gf-orange/15 text-gf-orange">
-                    <info.icon size={20} />
-                  </div>
-                  <div>
-                    <div className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
-                      {info.label}
-                    </div>
-                    <div className="mt-1 font-display text-lg tracking-wide text-white">
-                      {info.value}
-                    </div>
-                    <div className="mt-1 text-xs leading-relaxed text-gray-400">{info.sub}</div>
-                  </div>
+                <div key={info.label}>
+                  <dt className="text-sm font-semibold text-gf-orange-light">{info.label}</dt>
+                  <dd className="mt-1 font-display text-xl tracking-wide text-white">{info.value}</dd>
+                  <dd className="mt-1 text-base text-gray-400">{info.sub}</dd>
                 </div>
               ))}
-            </div>
+            </dl>
 
             <a
-              href={whatsappLink()}
+              href={whatsappLink(business.whatsapp, `Olá! Gostaria de fazer um pedido na ${business.name}.`)}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary w-full !py-4 !text-base"
             >
               <MessageCircle size={20} />
-              <span>CHAMAR NO WHATSAPP AGORA</span>
+              Chamar no WhatsApp
             </a>
           </div>
 
-          {/* Map */}
-          <div className="reveal reveal-delay-2 lg:col-span-6">
-            <div className="relative h-full min-h-[380px] overflow-hidden rounded-3xl border border-white/10 bg-gf-black">
+          <div className="reveal reveal-delay-2 lg:col-span-7">
+            <div className="h-full min-h-[380px] overflow-hidden rounded-3xl bg-gf-black">
               <iframe
-                src="https://www.google.com/maps?q=Granfinos+Burgers,+Varjão+Q+7+Conjunto+A+B+C,+Varjão+Q+7+Conjunto+D,+Brasília+-+DF,+Brazil&output=embed"
-                className="h-full w-full"
-                style={{ border: 0, minHeight: '380px' }}
+                src={`https://www.google.com/maps?q=${encodeURIComponent(business.address.mapsQuery)}&output=embed`}
+                className="h-full min-h-[380px] w-full border-0"
                 loading="lazy"
-                title="Mapa Granfinos"
+                title={`Mapa: ${business.name}`}
               />
-              <div className="pointer-events-none absolute left-4 top-4 rounded-2xl border border-white/10 bg-gf-black/90 px-4 py-3 backdrop-blur-md">
-                <div className="flex items-center gap-2">
-                  <MapPin size={16} className="text-gf-orange" />
-                  <span className="font-display text-sm tracking-wide text-white">
-                    GRANFINOS BURGER
-                  </span>
-                </div>
-                <p className="mt-0.5 text-xs text-gray-300">Varjão Q 7 Conj. A B C — Brasília, DF</p>
-              </div>
             </div>
           </div>
         </div>

@@ -1,54 +1,35 @@
 import { useEffect, useState } from 'react';
-import { ArrowRight, Clock, Flame, MapPin, Star, UtensilsCrossed } from 'lucide-react';
-import { assetUrl, whatsappLink } from '@/data/menu';
+import { ArrowRight, Clock, MapPin, Plus, Star } from 'lucide-react';
+import { heroShowcaseIds } from '@/data/content';
+import { useCatalog } from '@/hooks/useCatalog';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-
-const heroShowcase = [
-  {
-    id: 'monster',
-    name: 'Gran Monster Angus',
-    detail: 'Duplo Angus 160g · Duplo Cheddar · Bacon',
-    price: 'R$ 52,00',
-    image: assetUrl('galeria/WhatsApp_Image_2026-09-20_at_12.33.40.jpeg'),
-  },
-  {
-    id: 'egg',
-    name: 'Gran Egg Angus',
-    detail: 'Angus 160g · Ovo na Chapa · Bacon & Queijo',
-    price: 'R$ 43,00',
-    image: assetUrl('pedidos/WhatsApp_Image_2026-09-20_at_12.33.48.jpeg'),
-  },
-  {
-    id: 'salada',
-    name: 'Gran Salada Angus',
-    detail: 'Angus 160g · Alface Fresca · Tomate · Bacon',
-    price: 'R$ 43,00',
-    image: assetUrl('galeria/WhatsApp_Image_2026-09-20_at_12.33.47.jpeg'),
-  },
-  {
-    id: 'bacon',
-    name: 'Gran Bacon Angus',
-    detail: 'Angus 160g · Queijo Derretido · Barbecue',
-    price: 'R$ 40,00',
-    image: assetUrl('galeria/WhatsApp_Image_2026-09-20_at_12.33.46.jpeg'),
-  },
-];
+import { assetUrl, formatBRL } from '@/lib/format';
 
 const SLIDE_INTERVAL_MS = 3500;
 
-export default function Hero() {
+interface HeroProps {
+  onAdd: (id: string) => void;
+}
+
+export default function Hero({ onAdd }: HeroProps) {
   const ref = useScrollReveal<HTMLElement>();
+  const { catalog, isOpen } = useCatalog();
+  const { business } = catalog;
+  const showcase = heroShowcaseIds.flatMap((id) => catalog.items.filter((item) => item.id === id));
   const [activeSlide, setActiveSlide] = useState(0);
   const [paused, setPaused] = useState(false);
-  const current = heroShowcase[activeSlide];
+  const current = showcase[activeSlide % showcase.length];
 
   useEffect(() => {
     if (paused) return;
     const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % heroShowcase.length);
+      setActiveSlide((prev) => (prev + 1) % showcase.length);
     }, SLIDE_INTERVAL_MS);
     return () => clearInterval(timer);
-  }, [paused]);
+  }, [paused, showcase.length]);
+
+  const opensAt = business.hours.opens.slice(0, 2);
+  const closesAt = business.hours.closes.slice(0, 2);
 
   return (
     <section
@@ -56,194 +37,164 @@ export default function Hero() {
       id="inicio"
       className="relative flex min-h-[100dvh] items-center overflow-hidden bg-gf-black pb-16 pt-28 lg:pb-24 lg:pt-32"
     >
-      {/* Warm ambient depth */}
-      <div className="pointer-events-none absolute inset-0 bg-radial-ember opacity-80" />
-      <div className="pointer-events-none absolute -right-32 top-1/4 h-[520px] w-[520px] rounded-full bg-gf-orange/[0.08] blur-[130px]" />
-      <div className="pointer-events-none absolute -left-24 bottom-10 h-[380px] w-[380px] rounded-full bg-gf-orange/[0.05] blur-[110px]" />
-
-      <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-5 lg:grid-cols-12 lg:gap-12 lg:px-8">
-        {/* Left column: Typography & Actions */}
+      <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-5 lg:grid-cols-12 lg:px-8">
         <div className="lg:col-span-7">
-          <div className="reveal section-pill mb-6">
-            <Flame size={14} className="text-gf-orange" />
-            <span>Hamburgueria no Varjão · Brasília</span>
-          </div>
+          {isOpen !== undefined && (
+            <p className="reveal mb-6 flex items-center gap-2 text-base text-gray-300">
+              <span
+                className={`h-2.5 w-2.5 rounded-full ${isOpen ? 'bg-emerald-400' : 'bg-gray-500'}`}
+              />
+              {isOpen ? `Aberto agora · chapa acesa até ${closesAt}h` : `Fechado agora · abrimos às ${opensAt}h`}
+            </p>
+          )}
 
           <h1 className="reveal reveal-delay-1 font-display text-5xl uppercase leading-[0.94] tracking-tight text-white sm:text-7xl lg:text-[5.4rem]">
             CARNE NA BRASA.
             <br />
-            SABOR <span className="text-gradient-orange">GRANFINOS.</span>
+            SABOR <span className="text-gf-orange">GRANFINOS.</span>
           </h1>
 
-          <p className="reveal reveal-delay-2 mt-6 max-w-xl text-base leading-relaxed text-gray-300 sm:text-lg">
-            Carne de verdade com 160g de Angus suculento no ponto certo, queijo escorrendo, bacon
-            crocante e maionese verde da casa. Pede pelo WhatsApp que a gente chapeia na hora e
-            entrega quentinho.
+          <p className="reveal reveal-delay-2 mt-6 max-w-[56ch] text-lg leading-relaxed text-gray-300">
+            Hamburgueria artesanal no Varjão, em Brasília. Angus de 160g no ponto certo, queijo
+            escorrendo, bacon crocante e maionese da casa. Pede pelo WhatsApp que a gente chapeia na
+            hora e entrega quentinho.
           </p>
 
           <div className="reveal reveal-delay-3 mt-8 flex flex-col gap-3.5 sm:flex-row sm:items-center">
             <a href="#cardapio" className="btn-primary group">
-              <span>VER CARDÁPIO COMPLETO</span>
+              <span>Ver cardápio</span>
               <ArrowRight
                 size={18}
                 className="transition-transform duration-300 group-hover:translate-x-1"
               />
             </a>
-            <a
-              href={whatsappLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-secondary"
-            >
-              <UtensilsCrossed size={17} />
-              <span>PEDIR NO WHATSAPP</span>
+            <a href="#combo" className="btn-secondary">
+              Combo do dia
             </a>
           </div>
 
-          {/* Trust & Info Strip */}
-          <div className="reveal reveal-delay-4 mt-12 grid grid-cols-3 gap-4 border-t border-white/10 pt-8 sm:max-w-lg">
+          <dl className="reveal reveal-delay-4 mt-12 grid max-w-lg grid-cols-3 gap-6">
             <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-display text-2xl text-white sm:text-3xl">4.9</span>
-                <Star size={18} className="fill-gf-orange text-gf-orange" />
-              </div>
-              <p className="mt-1 text-xs text-gray-400">Avaliação dos clientes</p>
+              <dt className="sr-only">Avaliação</dt>
+              <dd className="flex items-center gap-1.5 font-display text-3xl text-white">
+                4.9 <Star size={18} className="fill-gf-orange text-gf-orange" />
+              </dd>
+              <dd className="mt-1 text-sm text-gray-400">Nota dos clientes</dd>
             </div>
-
-            <div className="border-l border-white/10 pl-4">
-              <div className="flex items-center gap-1.5 font-display text-2xl text-white sm:text-3xl">
-                <span>160G</span>
-              </div>
-              <p className="mt-1 text-xs text-gray-400">Blend Angus suculento</p>
+            <div>
+              <dt className="sr-only">Carne</dt>
+              <dd className="font-display text-3xl text-white">160G</dd>
+              <dd className="mt-1 text-sm text-gray-400">Blend Angus</dd>
             </div>
-
-            <div className="border-l border-white/10 pl-4">
-              <div className="flex items-center gap-1.5 font-display text-2xl text-gf-orange sm:text-3xl">
-                <span>19H–23H</span>
-              </div>
-              <p className="mt-1 text-xs text-gray-400">Aberto todos os dias</p>
+            <div>
+              <dt className="sr-only">Horário</dt>
+              <dd className="font-display text-3xl text-gf-orange">
+                {opensAt}H–{closesAt}H
+              </dd>
+              <dd className="mt-1 text-sm text-gray-400">Todos os dias</dd>
             </div>
-          </div>
+          </dl>
         </div>
 
-        {/* Right column: Auto-Alternating Burger Showcase */}
         <div
           className="reveal reveal-delay-2 lg:col-span-5"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          <div className="relative mx-auto max-w-md lg:max-w-none">
-            {/* Main Showcase Frame */}
-            <div className="animate-hero-float relative overflow-hidden rounded-[2rem] border border-white/10 bg-gf-black-card shadow-2xl">
+          <div className="mx-auto max-w-md lg:max-w-none">
+            <div className="overflow-hidden rounded-[2rem] bg-gf-black-card">
               <div className="relative aspect-[4/3.6] w-full overflow-hidden bg-gf-black-light">
-                {heroShowcase.map((slide, idx) => {
-                  const isActive = idx === activeSlide;
-                  return (
-                    <img
-                      key={slide.id}
-                      src={slide.image}
-                      alt={slide.name}
-                      className={`absolute inset-0 h-full w-full object-cover object-center transition-all duration-700 ease-out ${
-                        isActive
-                          ? 'scale-100 opacity-100 z-10'
-                          : 'scale-105 opacity-0 z-0 pointer-events-none'
-                      }`}
-                    />
-                  );
-                })}
-                <div className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-t from-gf-black via-gf-black/20 to-transparent" />
+                {showcase.map((slide) => (
+                  <img
+                    key={slide.id}
+                    src={assetUrl(slide.image)}
+                    alt={slide.name}
+                    className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ease-out ${
+                      slide.id === current.id
+                        ? 'z-10 scale-100 opacity-100'
+                        : 'pointer-events-none z-0 scale-105 opacity-0'
+                    }`}
+                  />
+                ))}
+                <div className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-t from-gf-black/80 via-transparent to-transparent" />
 
-                {/* Top pill inside frame */}
-                <div className="absolute left-4 top-4 z-30 flex items-center gap-2 rounded-full border border-white/15 bg-gf-black/80 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur-md">
-                  <Flame size={14} className="text-gf-orange" />
-                  <span>Feito na hora</span>
+                <div className="absolute right-4 top-4 z-30 rounded-full bg-gf-orange px-3.5 py-1.5 font-display text-base tracking-wide text-gf-black">
+                  {formatBRL(current.priceCents)}
                 </div>
 
-                <div className="absolute right-4 top-4 z-30 rounded-full bg-gf-orange px-3.5 py-1.5 font-display text-sm tracking-wide text-gf-black transition-all duration-300">
-                  {current.price}
-                </div>
-
-                {/* Slide indicator dots */}
-                <div className="absolute bottom-3 left-6 z-30 flex items-center gap-1.5">
-                  {heroShowcase.map((slide, idx) => (
+                <div className="absolute bottom-4 left-6 z-30 flex items-center gap-1.5">
+                  {showcase.map((slide) => (
                     <button
                       key={slide.id}
                       type="button"
-                      onClick={() => setActiveSlide(idx)}
+                      onClick={() => setActiveSlide(showcase.indexOf(slide))}
                       aria-label={`Ver ${slide.name}`}
                       className={`h-1.5 rounded-full transition-all duration-300 ${
-                        idx === activeSlide
-                          ? 'w-7 bg-gf-orange'
-                          : 'w-2 bg-white/35 hover:bg-white/60'
+                        slide.id === current.id ? 'w-7 bg-gf-orange' : 'w-2 bg-white/40 hover:bg-white/70'
                       }`}
                     />
                   ))}
                 </div>
               </div>
 
-              {/* Caption bar */}
-              <div className="flex items-center justify-between gap-4 border-t border-white/[0.06] bg-gf-black-card px-6 py-4">
+              <div className="flex items-center justify-between gap-4 px-6 py-5">
                 <div className="min-w-0">
-                  <div className="truncate font-display text-xl tracking-wide text-white">
+                  <div className="truncate font-display text-xl uppercase tracking-wide text-white">
                     {current.name}
                   </div>
-                  <div className="truncate text-xs text-gray-400">{current.detail}</div>
+                  <div className="truncate text-sm text-gray-400">{current.subtitle}</div>
                 </div>
-                <a
-                  href={whatsappLink(`Olá! Quero pedir o ${current.name} (${current.price}).`)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="shrink-0 rounded-full border border-gf-orange/40 bg-gf-orange/15 px-4 py-2 text-xs font-bold uppercase tracking-wider text-gf-orange-light transition-all hover:bg-gf-orange hover:text-gf-black"
+                <button
+                  type="button"
+                  onClick={() => onAdd(current.id)}
+                  className="flex shrink-0 items-center gap-1.5 rounded-full bg-gf-orange/15 px-4 py-2.5 text-sm font-bold text-gf-orange-light transition-colors hover:bg-gf-orange hover:text-gf-black"
                 >
+                  <Plus size={16} />
                   Pedir este
-                </a>
+                </button>
               </div>
             </div>
 
-            {/* Interactive Thumbnail Selector (2x2 or 4-col strip) */}
             <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-              {heroShowcase.map((item, idx) => {
-                const isActive = idx === activeSlide;
+              {showcase.map((item) => {
+                const isActive = item.id === current.id;
                 return (
                   <button
                     key={item.id}
                     type="button"
-                    onClick={() => setActiveSlide(idx)}
-                    className={`group flex items-center gap-2 rounded-2xl border p-2 text-left transition-all duration-300 ${
-                      isActive
-                        ? 'border-gf-orange bg-gf-orange/10'
-                        : 'border-white/10 bg-gf-black-light/70 hover:border-white/25'
+                    onClick={() => setActiveSlide(showcase.indexOf(item))}
+                    className={`flex items-center gap-2 rounded-2xl p-2 text-left transition-colors duration-300 ${
+                      isActive ? 'bg-gf-orange/15' : 'bg-gf-black-light hover:bg-gf-black-card'
                     }`}
                   >
                     <img
-                      src={item.image}
-                      alt={item.name}
+                      src={assetUrl(item.image)}
+                      alt=""
                       className="h-10 w-10 shrink-0 rounded-xl object-cover"
                     />
                     <div className="min-w-0">
                       <div
-                        className={`truncate text-xs font-bold ${
+                        className={`truncate text-sm font-semibold ${
                           isActive ? 'text-gf-orange-light' : 'text-white'
                         }`}
                       >
-                        {item.name.replace('Gran ', '')}
+                        {item.name.replace('Gran ', '').replace(' Angus', '')}
                       </div>
-                      <div className="text-[11px] text-gray-400">{item.price}</div>
+                      <div className="text-[13px] text-gray-400">{formatBRL(item.priceCents)}</div>
                     </div>
                   </button>
                 );
               })}
             </div>
 
-            {/* Location & Delivery info bar */}
-            <div className="mt-3.5 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/[0.06] bg-gf-black-light/60 px-4 py-2.5 text-xs text-gray-400">
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-1 text-sm text-gray-400">
               <span className="flex items-center gap-1.5">
-                <MapPin size={14} className="text-gf-orange" />
-                Varjão Q 7 Conj. A B C — Brasília
+                <MapPin size={15} className="text-gf-orange" />
+                {business.address.short}
               </span>
               <span className="flex items-center gap-1.5">
-                <Clock size={14} className="text-gf-orange" />
-                Preparo médio: 20–30 min
+                <Clock size={15} className="text-gf-orange" />
+                Preparo: {business.prepTime}
               </span>
             </div>
           </div>
