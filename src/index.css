@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+  }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background-color: #0a0a0a;
+    color: #f5f5f0;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: #ff6b1a;
+    color: #0a0a0a;
+  }
+
+  :focus-visible {
+    outline: 2px solid #ff8c42;
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Botão principal: cor chapada, reflexo discreto só no hover */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full bg-gf-orange px-7 py-4 text-sm font-bold uppercase tracking-wider text-gf-black transition-colors duration-300 ease-out;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.28) 50%, transparent 80%);
+    transform: translateX(-120%);
+    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .btn-primary:hover {
+    @apply bg-gf-orange-light;
+  }
+  .btn-primary:hover::before {
+    transform: translateX(120%);
+  }
+  .btn-primary:active {
+    @apply scale-[0.98];
+  }
+  .btn-primary:disabled {
+    @apply cursor-wait opacity-70;
+  }
+
+  .btn-secondary {
+    @apply relative inline-flex items-center justify-center gap-2.5 rounded-full bg-white/[0.07] px-7 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors duration-300 ease-out;
+  }
+  .btn-secondary:hover {
+    @apply bg-gf-orange/15 text-gf-orange-light;
+  }
+  .btn-secondary:active {
+    @apply scale-[0.98];
+  }
+
+  .section-title {
+    @apply font-display text-4xl uppercase leading-[0.98] text-white sm:text-5xl lg:text-6xl;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  .card-hover {
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee 32s linear infinite;
+  }
+}
+
+/* Revelação ao rolar. Fora de @layer para o Tailwind não descartar as classes de atraso. */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+.reveal-delay-1 { transition-delay: 80ms; }
+.reveal-delay-2 { transition-delay: 160ms; }
+.reveal-delay-3 { transition-delay: 240ms; }
+.reveal-delay-4 { transition-delay: 320ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .animate-marquee {
+    animation: none !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #ff6b1a;
+  border-radius: 4px;
+}

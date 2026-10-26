@@ -1,0 +1,178 @@
+{
+  "business": {
+    "name": "Granfinos Burger",
+    "whatsapp": "5561998115921",
+    "phoneDisplay": "(61) 99811-5921",
+    "instagram": "granfinosgurguer",
+    "address": {
+      "line1": "Varjão Q 7 Conjunto A B C",
+      "line2": "Varjão Q 7 Conjunto D — Brasília, DF",
+      "short": "Varjão Q 7 Conj. A B C — Brasília",
+      "mapsQuery": "Granfinos Burgers, Varjão Q 7 Conjunto A B C, Varjão Q 7 Conjunto D, Brasília - DF, Brazil"
+    },
+    "hours": {
+      "days": "Segunda a domingo",
+      "opens": "19:00",
+      "closes": "23:00",
+      "timeZone": "America/Sao_Paulo"
+    },
+    "prepTime": "20 a 30 min"
+  },
+  "items": [
+    {
+      "id": "gran-monster-angus",
+      "name": "Gran Monster Angus",
+      "subtitle": "Duplo Angus 320g · Cheddar · Bacon",
+      "description": "Pão brioche fofinho, 2 carnes altas de Angus 160g chapeadas no ponto, dobro de cheddar derretido, bastante bacon crocante e maionese da casa.",
+      "priceCents": 5200,
+      "image": "galeria/WhatsApp_Image_2026-09-20_at_12.33.40.jpeg",
+      "category": "angus",
+      "tag": "Mais vendido",
+      "featured": true
+    },
+    {
+      "id": "gran-bacon-angus",
+      "name": "Gran Bacon Angus",
+      "subtitle": "Angus 160g · Bacon · Barbecue",
+      "description": "Pão brioche selado na manteiga, burger Angus 160g suculento, queijo derretido, tiras de bacon dourado na chapa, molho barbecue e maionese da casa.",
+      "priceCents": 4000,
+      "image": "galeria/WhatsApp_Image_2026-09-20_at_12.33.46.jpeg",
+      "category": "angus",
+      "tag": "Clássico da casa",
+      "featured": true
+    },
+    {
+      "id": "gran-egg-angus",
+      "name": "Gran Egg Angus",
+      "subtitle": "Angus 160g · Ovo · Bacon",
+      "description": "Pão brioche macio, burger Angus 160g, ovo estalado na chapa com gema macia, bacon crocante, queijo derretido e maionese artesanal.",
+      "priceCents": 4300,
+      "image": "pedidos/WhatsApp_Image_2026-09-20_at_12.33.48.jpeg",
+      "category": "angus",
+      "featured": true
+    },
+    {
+      "id": "gran-salada-angus",
+      "name": "Gran Salada Angus",
+      "subtitle": "Angus 160g · Alface · Tomate · Bacon",
+      "description": "Pão brioche amanteigado, burger Angus 160g, queijo derretido, bacon crocante, alface americana fresca, rodelas de tomate e maionese da casa.",
+      "priceCents": 4300,
+      "image": "galeria/WhatsApp_Image_2026-09-20_at_12.33.47.jpeg",
+      "category": "angus",
+      "featured": true
+    },
+    {
+      "id": "gran-simples-angus",
+      "name": "Gran Simples Angus",
+      "subtitle": "Angus 160g · Queijo · Maionese caseira",
+      "description": "Pra quem gosta do sabor da carne: pão brioche macio, burger Angus 160g suculento no ponto, queijo derretido e maionese da casa.",
+      "priceCents": 3700,
+      "image": "galeria/WhatsApp_Image_2026-09-20_at_12.33.48_(1).jpeg",
+      "category": "angus"
+    },
+    {
+      "id": "gran-rings",
+      "name": "Gran Rings",
+      "subtitle": "Blend 160g · Onion rings · Maionese verde",
+      "description": "Pão brioche amanteigado, carne de 160g, queijo muçarela, bacon, três anéis de cebola empanados bem sequinhos e maionese verde.",
+      "priceCents": 4100,
+      "image": "galeria/WhatsApp_Image_2026-09-20_at_12.33.41.jpeg",
+      "category": "smash",
+      "tag": "Mais pedido",
+      "featured": true
+    },
+    {
+      "id": "smash-bacon",
+      "name": "Smash Bacon",
+      "subtitle": "Smash 80g · Bacon · Cheddar",
+      "description": "Pão smash prime, carne prensada na chapa com aquela crostinha caramelizada, bacon, queijo cheddar e maionese com ervas.",
+      "priceCents": 2200,
+      "image": "galeria/WhatsApp_Image_2026-09-20_at_12.33.46.jpeg",
+      "category": "smash"
+    },
+    {
+      "id": "smash-salada",
+      "name": "Smash Salada",
+      "subtitle": "Smash 80g · Alface · Tomate · Bacon",
+      "description": "Pão smash prime, carne 80g com crostinha crocante, bacon, alface americana, tomate, queijo cheddar e maionese com ervas.",
+      "priceCents": 2500,
+      "image": "galeria/WhatsApp_Image_2026-09-20_at_12.33.47.jpeg",
+      "category": "smash"
+    },
+    {
+      "id": "smash-simples",
+      "name": "Smash Simples",
+      "subtitle": "Smash 80g · Cheddar · Maionese com ervas",
+      "description": "Pão smash prime, blend de 80g prensado na chapa bem quente, queijo cheddar derretido e maionese com ervas.",
+      "priceCents": 1900,
+      "image": "galeria/WhatsApp_Image_2026-09-20_at_12.33.48_(1).jpeg",
+      "category": "smash"
+    },
+    {
+      "id": "batata-loaded",
+      "name": "Batata Loaded Bacon",
+      "subtitle": "Cheddar cremoso · Bacon em cubos",
+      "description": "Batata frita sequinha e estalando de crocante, afogada em cheddar cremoso e coberta com pedacinhos de bacon frito na hora.",
+      "priceCents": 2400,
+      "image": "pedidos/WhatsApp_Image_2026-09-20_at_12.33.44_(1).jpeg",
+      "category": "sides",
+      "tag": "Para dividir",
+      "featured": true
+    },
+    {
+      "id": "batata-frita",
+      "name": "Batata Frita Tradicional",
+      "subtitle": "Crocante · Sal marinho · Molho da casa",
+      "description": "Porção de batata frita bem douradinha, crocante por fora e macia por dentro, finalizada com sal marinho e potinho de molho da casa.",
+      "priceCents": 1800,
+      "image": "galeria/WhatsApp_Image_2026-09-20_at_12.33.44.jpeg",
+      "category": "sides"
+    }
+  ],
+  "drinks": [
+    {
+      "id": "refri-lata",
+      "name": "Refrigerante lata 310ml",
+      "detail": "Coca-Cola, Coca Zero, Guaraná, Guaraná Jesus, Sprite, Fanta ou Schweppes",
+      "priceCents": 500
+    },
+    {
+      "id": "suco-lata",
+      "name": "Suco Del Valle 310ml",
+      "detail": "Uva, pêssego, goiaba ou maracujá",
+      "priceCents": 600
+    },
+    {
+      "id": "monster-energy",
+      "name": "Energético Monster 473ml",
+      "detail": "Lata tradicional bem gelada",
+      "priceCents": 1000
+    },
+    {
+      "id": "schweppes-15l",
+      "name": "Schweppes Citrus 1,5L",
+      "detail": "Garrafa para dividir na mesa",
+      "priceCents": 1500
+    }
+  ],
+  "combos": [
+    {
+      "id": "combo-granfinos",
+      "name": "Combo Granfinos",
+      "description": "O burger mais pedido da casa com a nossa batata afogada no cheddar e bacon, mais uma bebida bem gelada.",
+      "includes": [
+        "gran-bacon-angus",
+        "batata-loaded",
+        "refri-lata"
+      ],
+      "includesLabels": [
+        "Gran Bacon Angus 160g no pão brioche",
+        "Batata loaded com cheddar e bacon",
+        "Refrigerante 310ml à escolha"
+      ],
+      "priceCents": 5800,
+      "image": "galeria/WhatsApp_Image_2026-09-20_at_12.33.46.jpeg",
+      "fullPriceCents": 6900
+    }
+  ]
+}
